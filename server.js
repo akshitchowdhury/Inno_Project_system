@@ -52,7 +52,8 @@ app.get('/users/:id', async (req, res) => {
 
 // POST: Create a user and assign a project
 app.post('/addUsers', async (req, res) => {
-    const {username, email, password, projectName, projectDescription } = req.body;
+    // const {username, email, password, department, projectName, projectDescription } = req.body;
+    const {username, email, password, department } = req.body;
 
     try {
         // Create a new user
@@ -60,22 +61,24 @@ app.post('/addUsers', async (req, res) => {
             username,
             email,
             password,
-        });
+            department
+                    });
         await newUser.save();
 
         // Create a new project and assign it to the user
-        const newProject = new Project({
-            name: projectName,
-            description: projectDescription,
-            ownerId: newUser._id
-        });
-        await newProject.save();
+        // const newProject = new Project({
+        //     name: projectName,
+        //     description: projectDescription,
+        //     ownerId: newUser._id
+        // });
+        // await newProject.save();
 
         // Link the project to the user's projectIds
-        newUser.projectIds.push(newProject._id);
+        // newUser.projectIds.push(newProject._id);
         await newUser.save();
 
-        res.status(201).json({ user: newUser, project: newProject });
+        res.status(201).json({ user: newUser });
+        // res.status(201).json({ user: newUser, project: newProject });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -92,7 +95,7 @@ app.delete('/users/:id', async (req, res) => {
         await Project.deleteMany({ ownerId: user._id });
 
         // Delete the user
-        await user.remove();
+        await user.deleteOne();
 
         res.status(200).json({ message: 'User and associated projects deleted' });
     } catch (error) {

@@ -13,6 +13,17 @@ router.get('/getTasks', async (req, res) => {
     }
 });
 
+
+router.get('/:id', async (req, res) => {
+    try {
+        const taskBoard = await TaskBoard.findById(req.params.id);
+        if (!taskBoard) return res.status(404).json({ message: 'TaskBoard not found' });
+        res.status(200).json(taskBoard);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 router.post('/addTask', async (req, res) => {
     try {
         // Destructuring request body
@@ -49,9 +60,8 @@ router.post('/addTask', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
-        const taskBoard = await TaskBoard.findById(req.params.id);
-        if (!taskBoard) return res.status(404).json({ message: 'TaskBoard not found' });
-        await taskBoard.deleteOne();
+        const taskBoard = await TaskBoard.findByIdAndDelete(req.params.id);
+      
         res.status(200).json({ message: 'TaskBoard deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });

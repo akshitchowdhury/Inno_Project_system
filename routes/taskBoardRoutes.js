@@ -27,10 +27,10 @@ router.get('/:id', async (req, res) => {
 router.post('/addTask', async (req, res) => {
     try {
         // Destructuring request body
-        const { employee, email, isLoggedIn, task, currentProject } = req.body;
+        const { employee, email, task, currentProject } = req.body;
 
         // Check if all required fields are provided
-        if (!employee || !email || isLoggedIn === undefined || !task || !currentProject) {
+        if (!employee || !email || !task || !currentProject) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
@@ -38,7 +38,7 @@ router.post('/addTask', async (req, res) => {
         const newTask = new TaskBoard({
             employee,
             email,
-            isLoggedIn,
+            
             task,
             currentProject
         });

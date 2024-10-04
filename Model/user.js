@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
     enum: ['admin', 'user'],
     default: 'user',
   },
+  isLoggedIn: {
+    type: Boolean,
+    default: false
+  },
   projectIds: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Project'

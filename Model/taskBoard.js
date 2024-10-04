@@ -9,10 +9,10 @@ const taskBoardSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    isLoggedIn: {
-        type: Boolean,
-        required: true
-    },
+    // isLoggedIn: {
+    //     type: Boolean,
+    //     required: true
+    // },
     task: {
         type: String,
         required: true

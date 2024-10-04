@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../Model/user');
 const Project = require('../Model/project');
+const Admin = require('../Model/adminEmail');
 const router = express.Router();
 
 
@@ -23,5 +24,50 @@ router.post("/sendMessage", async(req,res)=>{
     }
 })
 
+//employee sending to Admin
+router.post('/sendAdmin', async (req, res) => {
+    const { sender_email, receiver_username, messages } = req.body;
 
+    // Basic validation
+    if (!sender_email || !receiver_username || !Array.isArray(messages) || messages.length === 0) {
+        return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    try {
+        const adminEmail = new Admin({
+            sender_email,
+            receiver_username,
+            messages
+        });
+
+        await adminEmail.save();
+
+        // Send success response
+        return res.status(200).json({ message: 'Message sent successfully' });
+    } catch (error) {
+        console.error('Error sending message:', error);
+
+        // Send error response with appropriate status code and message
+        return res.status(500).json({ message: 'Failed to send message' });
+    }
+});
+
+
+router.delete('/deleteAll', async (req, res) => {
+    try {
+        await Admin.deleteMany();
+        res.status(200).json({ message: 'All messages deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+router.get('/getMessages', async (req, res) => {
+    try {
+        const users = await Admin.find();
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+})
 module.exports = router;

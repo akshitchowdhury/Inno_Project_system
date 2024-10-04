@@ -64,6 +64,7 @@ router.post('/addUsers', async (req, res) => {
 // });
 
 
+
 router.put('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -87,32 +88,93 @@ router.put('/login', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-router.put('/logout', async (req, res) => {
-    const token = req.headers.authorization?.split(' ')[1]; // Get token from Bearer token
+// router.put('/logout', async (req, res) => {
+//     const token = req.headers.authorization?.split(' ')[1]; // Get token from Bearer token
 
-    if (!token) {
-        return res.status(400).json({ message: 'Token is required' });
+//     if (!token) {
+//         return res.status(400).json({ message: 'Token is required' });
+//     }
+
+//     try {
+//         // Decode the token to get user info
+//         const decoded = jwt.verify(token, JWT_SECRET);
+//         const user = await User.findById(decoded.id);
+
+//         if (!user) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
+
+//         // Set isLoggedIn to false in the user document
+//         user.isLoggedIn = false;
+//         await user.save();
+
+//         res.status(200).json({ message: 'User successfully logged out' });
+//     } catch (error) {
+//         return res.status(500).json({ message: 'Failed to log out', error: error.message });
+//     }
+// });
+
+
+router.put('/logout', async (req, res) => {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(400).json({ message: 'Authorization header is missing or malformed' });
     }
 
+    const token = authHeader.split(' ')[1]; // Extract token from Bearer token
+
     try {
-        // Decode the token to get user info
+        // Verify the token to decode user information
         const decoded = jwt.verify(token, JWT_SECRET);
+
+        // Find the user by ID extracted from the token
         const user = await User.findById(decoded.id);
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        // Set isLoggedIn to false in the user document
+        // Set user's logged in status to false
         user.isLoggedIn = false;
         await user.save();
 
-        res.status(200).json({ message: 'User successfully logged out' });
+        return res.status(200).json({ message: 'User successfully logged out' });
     } catch (error) {
+        if (error instanceof jwt.TokenExpiredError) {
+            return res.status(401).json({ message: 'Token has expired, please log in again' });
+        }
+
         return res.status(500).json({ message: 'Failed to log out', error: error.message });
     }
 });
 
+
+router.post('/validate-token', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1]; // Extract the token from the Authorization header
+  
+    if (!token) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
+  
+    try {
+      // Verify the token using the secret key
+      const decoded = jwt.verify(token, JWT_SECRET); // Use the same secret you used to sign the token
+  
+      // Find the user based on the decoded token's payload (usually the user ID)
+      const user = await User.findById(decoded.id);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // If valid, return the user data
+      res.status(200).json({ user });
+    } catch (error) {
+      // If token is invalid or expired, send an error response
+      return res.status(401).json({ message: 'Invalid or expired token' });
+    }
+  });
 
 // router.put('/logout', async (req, res) => {
 //     const { id,isLoggedIn } = req.body;

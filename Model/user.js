@@ -15,6 +15,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  message: {
+    type: String
+  },
   department: {
     type: String,
     required: true

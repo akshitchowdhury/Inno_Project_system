@@ -176,30 +176,24 @@ router.post('/validate-token', async (req, res) => {
     }
   });
 
-// router.put('/logout', async (req, res) => {
-//     const { id,isLoggedIn } = req.body;
-//     try {
-//         // Find the user by email
-//         const user = await User.findById(id);
+router.put("/updatePassword", async(req,res)=>{
 
-//         if (!user) {
-//             return res.status(404).json({ message: 'User not found' });
-//         }
+    const {newPassword} = req.body
 
-//         // Update the user's isLoggedIn status to false
-//         user.isLoggedIn = false;
+    try {
+        const updatedPassword = await User.findByIdAndUpdate(req.params.id,
+            {password},
+            {new: true},
+        )
+        if(!updatedPassword){
+            return res.status(404).json({ message: 'Password unable to set' });
+        }
+        res.status(200).json({ message: 'Passsword  updated successfully', password: newPassword });
+    } catch (error) {
+        res.status(500).json({ message: error.message });   
+    }
+})
 
-//         // Save the updated user to the database
-//         await user.save();
-
-//         res.status(200).json({ message: 'Logged out successfully', user });
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// });
-
-
-// DELETE: Delete a user and their projects
 router.delete('/:id', async (req, res) => {
     try {
         const user = await User.findById(req.params.id);

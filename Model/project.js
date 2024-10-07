@@ -21,9 +21,9 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  projectstatus:{
+  projectStatus:{
     type:Boolean,
-    required: false
+    required: true
   }
   // ownerId: {
   //   type: mongoose.Schema.Types.ObjectId,

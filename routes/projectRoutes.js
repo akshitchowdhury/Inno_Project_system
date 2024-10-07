@@ -14,13 +14,15 @@ router.get('/fetchProjects', async (req, res) => {
 
 // POST: Add a new project
 router.post('/addProject', async (req, res) => {
-    const { projectName, projectDescription, projectDomain } = req.body;
+    const { projectName, projectDescription, projectDomain,projectClient, assignedTo } = req.body;
 
     try {
         const newProject = new Project({
             projectName,
             projectDescription,
-            projectDomain
+            projectDomain,
+            projectClient,
+            assignedTo
         });
         await newProject.save();
         res.status(201).json({ message: 'Project created successfully', project: newProject });

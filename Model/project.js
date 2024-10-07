@@ -12,6 +12,18 @@ const projectSchema = new mongoose.Schema({
   projectDomain: {
     type: String,
     required: true
+  },
+  projectClient:{
+    type: String,
+    required: true 
+  },
+  assignedTo: {
+    type: String,
+    required: true
+  },
+  projectstatus:{
+    type:Boolean,
+    required: false
   }
   // ownerId: {
   //   type: mongoose.Schema.Types.ObjectId,

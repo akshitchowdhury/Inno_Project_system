@@ -100,7 +100,7 @@ router.delete('/:id', async(req,res)=>{
     }
 })
 
-router.delete('/:id', async(req,res)=>{
+router.delete('/employee/:id', async(req,res)=>{
     try {
      
     const deleteEmpMessage  =await Employee.findByIdAndDelete(req.params.id);

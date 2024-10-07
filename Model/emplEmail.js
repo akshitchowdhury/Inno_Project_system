@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const emplEmailSchema = new mongoose.Schema({
     sender_email: {
         type: String,
-        required: true  
+        required: true  ,
+        
     },
     receiver_username: {
         type: String,

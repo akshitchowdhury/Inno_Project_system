@@ -176,9 +176,9 @@ router.post('/validate-token', async (req, res) => {
     }
   });
 
-router.put("/updatePassword", async(req,res)=>{
+router.put("/updatePassword/:id", async(req,res)=>{
 
-    const {newPassword} = req.body
+    const {password} = req.body
 
     try {
         const updatedPassword = await User.findByIdAndUpdate(req.params.id,
@@ -188,7 +188,7 @@ router.put("/updatePassword", async(req,res)=>{
         if(!updatedPassword){
             return res.status(404).json({ message: 'Password unable to set' });
         }
-        res.status(200).json({ message: 'Passsword  updated successfully', password: newPassword });
+        res.status(200).json({ message: 'Passsword  updated successfully', password: password });
     } catch (error) {
         res.status(500).json({ message: error.message });   
     }

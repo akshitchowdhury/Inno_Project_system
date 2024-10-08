@@ -28,10 +28,14 @@ router.get('/:id', async (req, res) => {
 
 // POST: Create a user and assign a project
 router.post('/addUsers', async (req, res) => {
-    const { username, email, password, department } = req.body;
+    const { username, email, password, department,empId,isPresent } = req.body;
 
     try {
-        const newUser = new User({ username, email, password, department });
+        const newUser = new User({ username, email, password, department,empId,   isPresent: {
+            WFO: isPresent?.WFO || true,  // Defaults to true if not provided
+            WFH: isPresent?.WFH || false, // Defaults to false if not provided
+            Leave: isPresent?.Leave || false // Defaults to false if not provided
+        } });
         await newUser.save();
         res.status(201).json({ user: newUser });
     } catch (error) {
@@ -39,6 +43,23 @@ router.post('/addUsers', async (req, res) => {
     }
 });
 
+
+router.put('/updateWorkMode/:id', async(req,res)=>{
+    const{isPresent} = req.body;
+
+    try {
+        const updatedWorkMode = await User.findByIdAndUpdate(req.params.id,
+            {isPresent},
+            {new: true},
+        )
+        if(!updatedWorkMode){
+            return res.status(404).json({ message: 'Work mode unable to set' });
+        }
+        res.status(200).json({ message: 'Work mode  updated successfully', isPresent: isPresent });
+    } catch (error) {
+        res.status(500).json({ message: error.message });   
+    }
+})
 
 // router.put('/login', async (req, res) => {
 //     const { email } = req.body;
@@ -176,23 +197,26 @@ router.post('/validate-token', async (req, res) => {
     }
   });
 
-router.put("/updatePassword/:id", async(req,res)=>{
-
-    const {password} = req.body
+  router.put("/updateWorkMode/:id", async (req, res) => {
+    const { isPresent } = req.body;
 
     try {
-        const updatedPassword = await User.findByIdAndUpdate(req.params.id,
-            {password},
-            {new: true},
-        )
-        if(!updatedPassword){
-            return res.status(404).json({ message: 'Password unable to set' });
+        const updatedWorkMode = await User.findByIdAndUpdate(
+            req.params.id,
+            { isPresent },
+            { new: true }  // returns the updated document
+        );
+        
+        if (!updatedWorkMode) {
+            return res.status(404).json({ message: 'Work mode unable to set' });
         }
-        res.status(200).json({ message: 'Passsword  updated successfully', password: password });
+
+        res.status(200).json({ message: 'Work mode updated successfully', isPresent: updatedWorkMode.isPresent });
     } catch (error) {
-        res.status(500).json({ message: error.message });   
+        res.status(500).json({ message: error.message });
     }
-})
+});
+
 
 router.delete('/:id', async (req, res) => {
     try {

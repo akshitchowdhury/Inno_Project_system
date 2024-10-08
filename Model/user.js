@@ -11,6 +11,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  empId: {
+    type: String,
+    required: true,
+  },
   password: {
     type: String,
     required: true,
@@ -30,6 +34,21 @@ const userSchema = new mongoose.Schema({
   isLoggedIn: {
     type: Boolean,
     default: false
+  },
+  
+  isPresent:{
+    WFO:{
+      type: Boolean,
+      default : true
+    },
+    WFH:{  type: Boolean,
+    default : false},
+
+    Leave:{
+      type: Boolean,
+      default : false
+    }
+    
   },
   projectIds: [{
     type: mongoose.Schema.Types.ObjectId,

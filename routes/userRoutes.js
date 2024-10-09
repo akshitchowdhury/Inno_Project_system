@@ -31,11 +31,8 @@ router.post('/addUsers', async (req, res) => {
     const { username, email, password, department,empId,isPresent } = req.body;
 
     try {
-        const newUser = new User({ username, email, password, department,empId,   isPresent: {
-            WFO: isPresent?.WFO || true,  // Defaults to true if not provided
-            WFH: isPresent?.WFH || false, // Defaults to false if not provided
-            Leave: isPresent?.Leave || false // Defaults to false if not provided
-        } });
+        const newUser = new User({ username, email, password, department,empId,   isPresent
+        } );
         await newUser.save();
         res.status(201).json({ user: newUser });
     } catch (error) {

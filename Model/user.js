@@ -37,19 +37,25 @@ const userSchema = new mongoose.Schema({
   },
   
   isPresent:{
-    WFO:{
-      type: Boolean,
-      default : true
-    },
-    WFH:{  type: Boolean,
-    default : false},
-
-    Leave:{
-      type: Boolean,
-      default : false
-    }
+    type: String,
+    enum: ['Off Duty','WFO', 'WFH', 'Leave'],
+    default: 'Off Duty'
     
   },
+  // isPresent:{
+  //   WFO:{
+  //     type: Boolean,
+  //     default : true
+  //   },
+  //   WFH:{  type: Boolean,
+  //   default : false},
+
+  //   Leave:{
+  //     type: Boolean,
+  //     default : false
+  //   }
+    
+  // },
   projectIds: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Project'

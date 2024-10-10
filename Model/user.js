@@ -33,29 +33,22 @@ const userSchema = new mongoose.Schema({
   },
   isLoggedIn: {
     type: Boolean,
-    default: false
+    default: false,
+    timestamps: true
   },
-  
+  loggedInAt: {
+    type: Date
+  },
+  loggedOutAt: {
+    type: Date
+  },
   isPresent:{
     type: String,
     enum: ['Off Duty','WFO', 'WFH', 'Leave'],
-    default: 'Off Duty'
+    default: 'Off Duty',
+    
     
   },
-  // isPresent:{
-  //   WFO:{
-  //     type: Boolean,
-  //     default : true
-  //   },
-  //   WFH:{  type: Boolean,
-  //   default : false},
-
-  //   Leave:{
-  //     type: Boolean,
-  //     default : false
-  //   }
-    
-  // },
   projectIds: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Project'

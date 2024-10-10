@@ -99,6 +99,18 @@ router.put('/login', async (req, res) => {
         const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { expiresIn: '10h' });
 
         user.isLoggedIn = true;
+        
+        user.loggedInAt = new Date().getTime();
+
+        // user.loggedInAt = new Date(user.isLoggedIn.createdAt).toLocaleString('en-US', {timeZone: 'Asia/Kolkata', 
+        //     year: 'numeric', 
+        //     month: '2-digit', 
+        //     day: '2-digit',
+        //     hour: '2-digit', 
+        //     minute: '2-digit', 
+        //     second: '2-digit'});
+
+      
         await user.save();
 
         res.status(200).json({ user, token });
@@ -153,8 +165,8 @@ router.put('/logout', async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        // Set user's logged in status to false
         user.isLoggedIn = false;
+        user.loggedOutAt = new Date().toLocaleString();
         await user.save();
 
         return res.status(200).json({ message: 'User successfully logged out' });

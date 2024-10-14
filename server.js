@@ -1,6 +1,6 @@
 const express = require('express');
 const connectDB = require('./Lib/db');
-const cors = require('cors');
+// const cors = require('cors');
 const routes = require('./routes');
 const app = express();
 const PORT = 3000;
@@ -8,6 +8,8 @@ const PORT = 3000;
 // const allowedOrigins = ['http://localhost:5173','http://localhost:5174'];
 // const allowedOrigins = ['*'];
 
+var cors = require('cors')
+app.use(cors({ origin: '*' })); 
 // app.use(cors({
 //     origin: function (origin, callback) {
 //         if (allowedOrigins.indexOf(origin) !== -1) {

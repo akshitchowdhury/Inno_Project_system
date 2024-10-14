@@ -9,7 +9,15 @@ const PORT = 3000;
 // const allowedOrigins = ['*'];
 
 var cors = require('cors')
-app.use(cors({ origin: '*' })); 
+app.use(cors(
+    { origin: '*' ,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type'],}
+
+));
+
+
+
 // app.use(cors({
 //     origin: function (origin, callback) {
 //         if (allowedOrigins.indexOf(origin) !== -1) {

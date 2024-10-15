@@ -7,8 +7,8 @@ const PORT = 3000;
 
 // Allowed origins
 const allowedOrigins = [
-  'https://inno-project-system-admin.vercel.app',  // Your frontend URL
-  'http://localhost:5173',  // Local development
+  'https://inno-project-system-admin.vercel.app',  
+  'https://inno-project-system-employee.vercel.app',  // Local development
 ];
 
 // Set up CORS configuration

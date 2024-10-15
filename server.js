@@ -7,8 +7,9 @@ const PORT = 3000;
 
 // Allowed origins
 const allowedOrigins = [
+  'https://inno-project-system-employee.vercel.app',
   'https://inno-project-system-admin.vercel.app',  
-  'https://inno-project-system-employee.vercel.app',  // Local development
+  ,  // Local development
 ];
 
 // Set up CORS configuration
